@@ -3,8 +3,16 @@
 import requests
 from bs4 import BeautifulSoup
 from HadithObj import HadithObj
-##############################
+import tweepy
+import time
 
+
+##############################
+auth = tweepy.OAuthHandler("xbQ6UutSMxBSH0mulveNonzAA",
+                           "LkPw21RkBytGp1ZjU4xSkhgDLXg3m7IDR6L6byG4mX8LqidWDq")
+auth.set_access_token("1036502449668980736-1OXOStNRQogRIYruMfZl6UtJzqWhp4",
+                      "BjY8YFafxDKtV6juNDll6iSBx9mICew2yTzpNuDKRJo4t")
+api = tweepy.API(auth)
 # DOWNLOADS WEBSITE HTML AND CREATES REFERENCE FOR EACH HADITH BOOK AND STORES IN LIST HADITHBOOKS #
 ##############################################################################
 webPage = requests.get("https://sunnah.com/")
@@ -67,9 +75,9 @@ for book in hadithBooks:
                     if narrator.get_text() is not None:
                         narrator = narrator.get_text()
                     else:
-                        narrator
+                        narrator = "Narrator Unknown"
                 else:
-                    narrator = "missing data"
+                    narrator = "Narrator Unknown"
                 ############################################################
 
                 # STORES HADITH TEXT ELEMENT FROM HADITH IN VAR HADITHTEXT #
@@ -86,7 +94,6 @@ for book in hadithBooks:
                 ################################################################
 
                 h = HadithObj(narrator,hadithText,bookTitle)
-            
-              
-                print(h.str())
-                print(h.isValid())
+                twitterList = list()
+                if h.isValid and h.CharCount() < 281:
+                    twitterList.append(h)
