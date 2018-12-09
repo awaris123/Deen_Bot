@@ -2,7 +2,6 @@
 ##############################
 import requests
 from bs4 import BeautifulSoup
-# from HadithObj import HadithObj
 import tweepy
 import time
 
@@ -13,7 +12,13 @@ def build_hadith(narrator, hadithText, bookTitle):
     string += "\n" + hadithText
     string += "\n" + bookTitle
     return string
-
+def str(narrator, hadithText, bookTitle):
+        string = "========================================================================================================================="
+        string += "\n" + narrator
+        string += "\n" + hadithText
+        string += "\n" + bookTitle
+        string += "\n" + "========================================================================================================================="
+        return string
 
 def isValid(hadithText):
     return (hadithText.isspace() is not True)
@@ -112,7 +117,6 @@ for book in hadithBooks:
                     hadithText = "missing data"
                 ################################################################
 
-                # h = HadithObj(narrator,hadithText,bookTitle)
 
                 if isValid(hadithText) and CharCount(narrator,bookTitle,hadithText) < 281:
                     print(build_hadith(narrator,bookTitle,hadithText))
