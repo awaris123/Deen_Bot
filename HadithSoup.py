@@ -2,11 +2,30 @@
 ##############################
 import requests
 from bs4 import BeautifulSoup
-from HadithObj import HadithObj
+# from HadithObj import HadithObj
 import tweepy
 import time
 
 
+def build_hadith(narrator, hadithText, bookTitle):
+    string = ""
+    string += "\n" + narrator
+    string += "\n" + hadithText
+    string += "\n" + bookTitle
+    return string
+
+
+def isValid(hadithText):
+    return (hadithText.isspace() is not True)
+
+def CharCount(narrator, hadithText, bookTitle):
+    num = 0
+    for _ in build_hadith(narrator, hadithText, bookTitle):
+        num += 1
+    return num
+
+hour = 3600 # Hours in Seconds
+day = 24*hour # Day
 ##############################
 auth = tweepy.OAuthHandler("xbQ6UutSMxBSH0mulveNonzAA",
                            "LkPw21RkBytGp1ZjU4xSkhgDLXg3m7IDR6L6byG4mX8LqidWDq")
@@ -25,7 +44,7 @@ hadithBooks = dataSet.find_all(class_ = "collection_title")
 #  NESTED FOR-LOOP TO ITERATE THROUGH EACH HADITH BOOK AND PARSE INFO#
 ###############################################################################
 for book in hadithBooks:
-    
+
     # CREATES A LIST OF ALL TAGS WITH LINK TO HADITH BOOK PAGE STORES IN VAR ROUTE #
     #########################################
     BookCollection = (list(book.children))
@@ -38,7 +57,7 @@ for book in hadithBooks:
 
     # DOWNLOADS PAGE FOR EACH HADITH BOOK AND CREATES LIST OF SUBSECTIONS/TOPICS AND STORES IN LIST HADITHSECTIONS #
     #################################################################
-    bookWebPage = requests.get("https://sunnah.com"+route) 
+    bookWebPage = requests.get("https://sunnah.com"+route)
     Sections = BeautifulSoup(bookWebPage.content,"html.parser")
     hadithSections = Sections.find_all(class_ = "book_titles")
     #################################################################
@@ -63,10 +82,10 @@ for book in hadithBooks:
                 # STORES HADITH ELEMENTS IN VAR HADITH #
                 ##########################################################
                 hadith = collection.find(class_ = "englishcontainer")
-              
-                
+
+
                 ##########################################################
-              
+
                 # STORES NARRATION ELEMENT FROM HADITH IN VAR NARRARTOR #
                 ############################################################
                 narrator = hadith.find(class_ = "english_hadith_full")
@@ -93,7 +112,9 @@ for book in hadithBooks:
                     hadithText = "missing data"
                 ################################################################
 
-                h = HadithObj(narrator,hadithText,bookTitle)
-                twitterList = list()
-                if h.isValid and h.CharCount() < 281:
-                    twitterList.append(h)
+                # h = HadithObj(narrator,hadithText,bookTitle)
+
+                if isValid(narrator,bookTitle,hadithText) and CharCount(narrator,bookTitle,hadithText) < 281:
+                    print(build_hadith(narrator,bookTitle,hadithText))
+                    api.update_status(build_hadith(narrator,bookTitle,hadithText))
+                    time.sleep(day)
