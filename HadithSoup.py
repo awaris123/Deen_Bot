@@ -114,7 +114,7 @@ for book in hadithBooks:
 
                 # h = HadithObj(narrator,hadithText,bookTitle)
 
-                if isValid(narrator,bookTitle,hadithText) and CharCount(narrator,bookTitle,hadithText) < 281:
+                if isValid(hadithText) and CharCount(narrator,bookTitle,hadithText) < 281:
                     print(build_hadith(narrator,bookTitle,hadithText))
                     api.update_status(build_hadith(narrator,bookTitle,hadithText))
                     time.sleep(day)
