@@ -4,6 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 import tweepy
 import time
+import
 
 
 def build_hadith(narrator, hadithText, bookTitle):
@@ -32,6 +33,7 @@ def CharCount(narrator, hadithText, bookTitle):
 
 hour = 3600 # Hours in Seconds
 day = 24*hour # Day
+tweets = list()
 ##############################
 auth = tweepy.OAuthHandler("xbQ6UutSMxBSH0mulveNonzAA",
                            "LkPw21RkBytGp1ZjU4xSkhgDLXg3m7IDR6L6byG4mX8LqidWDq")
@@ -121,5 +123,8 @@ for book in hadithBooks:
 
                 if isValid(hadithText) and CharCount(narrator,bookTitle,hadithText) < 281:
                     print(build_hadith(narrator,bookTitle,hadithText))
-                    api.update_status(build_hadith(narrator,bookTitle,hadithText))
-                    time.sleep(day)
+                    tweets.append(build_hadith(narrator,bookTitle,hadithText))
+while True:
+    randIndex = random.randint(0,len(tweets) -1)
+    api.update_status(tweets(randIndex))
+    time.sleep(day/4)
