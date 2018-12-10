@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 import tweepy
 import time
-import
+import random
 
 
 def build_hadith(narrator, hadithText, bookTitle):
