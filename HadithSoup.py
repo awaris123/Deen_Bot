@@ -126,5 +126,5 @@ for book in hadithBooks:
                     tweets.append(build_hadith(narrator,bookTitle,hadithText))
 while True:
     randIndex = random.randint(0,len(tweets) -1)
-    api.update_status(tweets(randIndex))
+    api.update_status(tweets[randIndex])
     time.sleep(day/4)
