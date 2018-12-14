@@ -34,6 +34,8 @@ def CharCount(narrator, hadithText, bookTitle):
 hour = 3600 # Hours in Seconds
 day = 24*hour # Day
 tweets = list()
+invalid_flags = {"chain of transmitters","similar hadith","other traditions"}
+
 ##############################
 auth = tweepy.OAuthHandler("xbQ6UutSMxBSH0mulveNonzAA",
                            "LkPw21RkBytGp1ZjU4xSkhgDLXg3m7IDR6L6byG4mX8LqidWDq")
@@ -122,8 +124,14 @@ for book in hadithBooks:
 
 
                 if isValid(hadithText) and CharCount(narrator,bookTitle,hadithText) < 281:
-                    print(build_hadith(narrator,bookTitle,hadithText))
-                    tweets.append(build_hadith(narrator,bookTitle,hadithText))
+                    tweet = build_hadith(narrator,hadithText,bookTitle)
+                    viable = True
+                    for flag in invalid_flags:
+                        if tweet.contains(flag):
+                            viable = False
+                    if(viable):
+                        print(tweet)
+                        tweets.append(tweet)
 while True:
     randIndex = random.randint(0,len(tweets) -1)
     api.update_status(tweets[randIndex])
