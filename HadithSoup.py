@@ -127,7 +127,7 @@ for book in hadithBooks:
                     tweet = build_hadith(narrator,hadithText,bookTitle)
                     viable = True
                     for flag in invalid_flags:
-                        if tweet.contains(flag):
+                        if tweet.__contains__(flag):
                             viable = False
                     if(viable):
                         print(tweet)
