@@ -30,8 +30,8 @@ def build_hadith(narrator, hadithText, bookTitle):
     return string
 
 
-def isValid(hadithText):
-    return (hadithText.isspace() is not True)
+def isValid(narr, hadithText, book):
+    return (not narr.isspace() and not hadithText.isspace() and not book.isspace())
 
 def CharCount(hadith):
     num = 0
@@ -40,8 +40,10 @@ def CharCount(hadith):
     return num
 
 
+minute = 60
+hour = 60 * minute
+day = 24 * hour
 
-day = 86400 #
 tweets = list()
 invalid_flags = {"chain of transmitters","similar hadith","other traditions"}
 
@@ -50,21 +52,16 @@ invalid_flags = {"chain of transmitters","similar hadith","other traditions"}
 
 valid = True
 while True:
-    randIndex = random.randint(0,40200)
-    try:
-        tweet = build_hadith(cursor[randIndex]['narrator'], cursor[randIndex]['text'],cursor[randIndex]['title'])
+    randIndex = random.randint(0,40720)
 
-        for flag in invalid_flags:
-            if flag in tweet:
-                valid = False
-                break
+    narrator, text, title = cursor[randIndex]['narrator'], cursor[randIndex]['text'],cursor[randIndex]['title']
+    tweet = build_hadith(narrator, text, title)
 
-        if not isValid(tweet) or CharCount(tweet) > 280:
+    for flag in invalid_flags:
+        if flag in tweet:
             valid = False
+            break
 
-        if valid:
-            api.update_status(tweet)
-            time.sleep(day/4)
-
-    except IndexError:
-        pass
+    if isValid(narrator,text,title) and CharCount(tweet) < 281 and valid:
+        api.update_status(tweet)
+        time.sleep(day/4)

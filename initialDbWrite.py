@@ -119,5 +119,5 @@ for book in hadithBooks:
 
                 obj = Hadith(narrator, hadithText, bookTitle)
                 tweets.append(obj.attr())
-print(len(tweet))
+print(len(tweets))
 # db.inventory.insert_many(tweets)
