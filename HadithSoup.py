@@ -7,10 +7,20 @@ from pymongo import MongoClient
 import pymongo
 
 
-
+#  Mongo DB Connection
 client = pymongo.MongoClient("mongodb+srv://awaris:(fekaA1999)@hadith-deu8y.mongodb.net/test?retryWrites=true")
 db = client.test
+cursor = db.inventory.find({})
 
+# Twitter OAuth tokens
+auth = tweepy.OAuthHandler("xbQ6UutSMxBSH0mulveNonzAA",
+                           "LkPw21RkBytGp1ZjU4xSkhgDLXg3m7IDR6L6byG4mX8LqidWDq")
+auth.set_access_token("1036502449668980736-1OXOStNRQogRIYruMfZl6UtJzqWhp4",
+                      "BjY8YFafxDKtV6juNDll6iSBx9mICew2yTzpNuDKRJo4t")
+api = tweepy.API(auth)
+
+
+# Helper Functions
 
 def build_hadith(narrator, hadithText, bookTitle):
     string = ""
@@ -35,14 +45,8 @@ day = 86400 #
 tweets = list()
 invalid_flags = {"chain of transmitters","similar hadith","other traditions"}
 
-##############################
-auth = tweepy.OAuthHandler("xbQ6UutSMxBSH0mulveNonzAA",
-                           "LkPw21RkBytGp1ZjU4xSkhgDLXg3m7IDR6L6byG4mX8LqidWDq")
-auth.set_access_token("1036502449668980736-1OXOStNRQogRIYruMfZl6UtJzqWhp4",
-                      "BjY8YFafxDKtV6juNDll6iSBx9mICew2yTzpNuDKRJo4t")
-api = tweepy.API(auth)
 
-cursor = db.inventory.find({})
+
 
 valid = True
 while True:
